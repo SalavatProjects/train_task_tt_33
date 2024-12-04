@@ -1,0 +1,113 @@
+name: train_task_tt_33
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.0
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  equatable: ^2.0.5
+  flagsmith: ^6.0.0
+  cupertino_icons: ^1.0.8
+  flutter_app_info: ^3.0.2
+  flutter_bloc: ^8.1.6
+  flutter_svg: ^2.0.16
+  in_app_review: ^2.0.9
+  flutter_launcher_icons: ^0.14.1
+  flutter_native_splash: ^2.4.3
+  intl: ^0.19.0
+  isar: ^3.1.0+1
+  isar_flutter_libs:
+    git:
+      url: https://github.com/MrLittleWhite/isar_flutter_libs.git
+  path_provider: ^2.1.5
+  shared_preferences: ^2.3.3
+  url_launcher: ^6.3.1
+  webview_flutter: ^4.10.0
+  webview_flutter_android: ^4.0.2
+  webview_flutter_wkwebview: ^3.16.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.13
+  flutter_gen_runner: 5.8.0
+  isar_generator: ^3.1.0+1
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  fonts:
+    - family: 'Jost'
+      fonts:
+        - asset: assets/fonts/Jost-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Jost-ThinItalic.ttf
+          style: italic
+          weight: 100
+        - asset: assets/fonts/Jost-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Jost-ExtraLightItalic.ttf
+          style: italic
+          weight: 200
+        - asset: assets/fonts/Jost-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Jost-LightItalic.ttf
+          style: italic
+          weight: 300
+        - asset: assets/fonts/Jost-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Jost-Italic.ttf
+          style: italic
+          weight: 400
+        - asset: assets/fonts/Jost-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Jost-MediumItalic.ttf
+          style: italic
+          weight: 500
+        - asset: assets/fonts/Jost-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Jost-SemiBoldItalic.ttf
+          style: italic
+          weight: 600
+        - asset: assets/fonts/Jost-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Jost-BoldItalic.ttf
+          style: italic
+          weight: 700
+        - asset: assets/fonts/Jost-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Jost-ExtraBoldItalic.ttf
+          style: italic
+          weight: 800
+        - asset: assets/fonts/Jost-Black.ttf
+          weight: 900
+        - asset: assets/fonts/Jost-BlackItalic.ttf
+          style: italic
+          weight: 900
+
+flutter_gen:
+  output: lib/gen/
+  line_length: 80
+
+flutter_native_splash:
+  color: "#FDF7E0"
+  image: assets/images/app_icon.png
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/app_icon.png"

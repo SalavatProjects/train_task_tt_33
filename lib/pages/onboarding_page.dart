@@ -17,13 +17,17 @@ class OnBoardingPage extends StatefulWidget {
 class _OnBoardingPageState extends State<OnBoardingPage> {
   final _controller = PageController();
   int _currentPage = 0;
-  
+  String _btnText = 'Next';
+
   Future<void> _nextPage() async {
     if (_currentPage == 2) {
       Navigator.of(context).pushReplacementNamed(AppRoutes.home);
     } else {
       setState(() {
         _currentPage++;
+        if (_currentPage == 2) {
+          _btnText = 'Get started';
+        }
       });
       await _controller.nextPage(
           duration: AppConstants.duration200,
@@ -59,56 +63,58 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               fit: BoxFit.fill
           )
         ),
-        child: PageView(
-          controller: _controller,
-          physics: const NeverScrollableScrollPhysics(),
+        child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text('mood'.toUpperCase(), style: AppStyles.displayLarge.copyWith(fontSize: 40),),
-                  Text('monitor'.toUpperCase(), style: AppStyles.displayMedium,),
-                  Text('app'.toUpperCase(), style: AppStyles.displayLarge.copyWith(fontSize: 64),),
-                  const SizedBox(height: 260,),
-                  _ThreeDots(currentPage: _currentPage),
-                  const SizedBox(height: 13,),
-                  _NextBtn(onTap: _nextPage),
-                  const SizedBox(height: 48,)
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const Text('Monitor your mood and improve your quality of life with MoodMonitor, your personal assistant in managing emotions.',
-                    style: AppStyles.bodyLarge,
-                    textAlign: TextAlign.center,
+            PageView(
+              controller: _controller,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('mood'.toUpperCase(), style: AppStyles.displayLarge.copyWith(fontSize: 40),),
+                      Text('monitor'.toUpperCase(), style: AppStyles.displayMedium,),
+                      Text('app'.toUpperCase(), style: AppStyles.displayLarge.copyWith(fontSize: 64),),
+                    ],
                   ),
-                  const SizedBox(height: 300,),
-                  _ThreeDots(currentPage: _currentPage),
-                  const SizedBox(height: 13,),
-                  _NextBtn(onTap: _nextPage),
-                  const SizedBox(height: 48,)
-                ],
-              ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Monitor your mood and improve your quality of life with MoodMonitor, your personal assistant in managing emotions.',
+                        style: AppStyles.bodyLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Start controlling your mood and work on improving your emotional state today!',
+                        style: AppStyles.bodyLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const Text('Start controlling your mood and work on improving your emotional state today!',
-                    style: AppStyles.bodyLarge,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 300,),
                   _ThreeDots(currentPage: _currentPage),
                   const SizedBox(height: 13,),
-                  _NextBtn(onTap: _nextPage),
+                  _NextBtn(onTap: _nextPage, text: _btnText,),
                   const SizedBox(height: 48,)
                 ],
               ),
@@ -122,9 +128,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
 class _NextBtn extends StatelessWidget {
   void Function() onTap;
+  String text;
   _NextBtn({
     super.key,
     required this.onTap,
+    required this.text,
   });
 
   @override
@@ -139,8 +147,8 @@ class _NextBtn extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           color: AppColors.white
         ),
-        child: const Center(
-          child: Text('Next', style: AppStyles.displayMedium,),
+        child: Center(
+          child: Text(text, style: AppStyles.displayMedium,),
         ),
       ),
     );

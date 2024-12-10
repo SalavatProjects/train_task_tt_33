@@ -18,6 +18,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/arrow back.svg
   String get arrowBack => 'assets/icons/arrow back.svg';
 
+  /// File path: assets/icons/arrow down.svg
+  String get arrowDown => 'assets/icons/arrow down.svg';
+
+  /// File path: assets/icons/arrow forward.svg
+  String get arrowForward => 'assets/icons/arrow forward.svg';
+
   /// File path: assets/icons/book.svg
   String get book => 'assets/icons/book.svg';
 
@@ -49,6 +55,8 @@ class $AssetsIconsGen {
   List<String> get values => [
         angryFace,
         arrowBack,
+        arrowDown,
+        arrowForward,
         book,
         chart,
         close,

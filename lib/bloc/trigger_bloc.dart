@@ -11,7 +11,11 @@ class TriggerBloc extends Cubit<TriggerState> {
     emit(state.copyWith(name: value));
   }
 
-  void addSubjects(List<String> value) {
+  void updateSubject(List<String> value) {
+    emit(state.copyWith(subjects: value));
+  }
+
+  /*void addSubjects(List<String> value) {
     List<String> updatedSubjects = [];
     if (state.subjects == null) {
       updatedSubjects.addAll(value);
@@ -20,6 +24,15 @@ class TriggerBloc extends Cubit<TriggerState> {
     }
     emit(state.copyWith(subjects: updatedSubjects));
   }
+
+  void deleteSubject(int index) {
+    List<String> updatedSubjects = [];
+    if (state.subjects != null) {
+      state.subjects!.removeAt(index);
+      updatedSubjects = state.subjects!;
+      emit(state.copyWith(subjects: updatedSubjects));
+    }
+  }*/
 
   void updateComment(String value) {
     emit(state.copyWith(comment: value));

@@ -9,6 +9,7 @@ import 'package:train_task_tt_33/ui_kit/colors.dart';
 import 'package:train_task_tt_33/bloc/moods_bloc.dart';
 import 'package:train_task_tt_33/gen/assets.gen.dart';
 import 'package:intl/intl.dart';
+import 'package:train_task_tt_33/utils/constants.dart';
 
 
 class MainPage extends StatefulWidget {
@@ -40,7 +41,7 @@ class _MainPageState extends State<MainPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const SizedBox(height: 26,),
+          const SizedBox(height: 32,),
           BlocBuilder<MoodsBloc, MoodsState>(
             builder: (context, state) {
               return Row(
@@ -56,20 +57,20 @@ class _MainPageState extends State<MainPage> {
                               switch (mood.type) {
                                 case 0:
                                   {
-                                    color = AppColors.red;
-                                    iconPath = Assets.icons.angryFace;
-                                    break;
-                                  }
-                                case 1:
-                                  {
                                     color = AppColors.yellow;
                                     iconPath = Assets.icons.happy;
                                     break;
                                   }
-                                case 2:
+                                case 1:
                                   {
                                     color = AppColors.violet;
                                     iconPath = Assets.icons.unhappy;
+                                    break;
+                                  }
+                                case 2:
+                                  {
+                                    color = AppColors.red;
+                                    iconPath = Assets.icons.angryFace;
                                     break;
                                   }
                                 case 3:
@@ -172,7 +173,9 @@ class _MainPageState extends State<MainPage> {
                   const SizedBox(height: 20,),
                   _GoNextBtn(
                       opacity: moodType == null ? 0.65 : 1,
-                      onPressed: moodType == null ? null : () {})
+                      onPressed: moodType == null ? null : () {
+                        Navigator.of(context).pushNamed(AppRoutes.mood);
+                      })
                 ],
               );
             },
@@ -203,11 +206,11 @@ class _MoodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
+    return AnimatedOpacity(
       opacity: opacity,
-      child: CupertinoButton(
-        onPressed: onPressed,
-        padding: EdgeInsets.zero,
+      duration: AppConstants.duration200,
+      child: GestureDetector(
+        onTap: onPressed,
         child: Container(
           width: 178,
           height: 140,

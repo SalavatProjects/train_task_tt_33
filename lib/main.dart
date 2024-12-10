@@ -11,6 +11,7 @@ import 'package:train_task_tt_33/pages/onboarding_page.dart';
 import 'package:train_task_tt_33/pages/privacy_page.dart';
 import 'package:train_task_tt_33/pages/splash_page.dart';
 import 'package:train_task_tt_33/pages/trigger_page.dart';
+import 'package:train_task_tt_33/pages/mood_page.dart';
 import 'package:train_task_tt_33/remote_config.dart';
 import 'package:train_task_tt_33/storages/isar.dart';
 import 'package:train_task_tt_33/storages/shared_preferences.dart';
@@ -87,6 +88,10 @@ class _AppWidget extends StatelessWidget {
             AppRoutes.trigger => CupertinoPageRoute(
               settings: settings,
               builder: (context) => const TriggerPage(),
+            ),
+            AppRoutes.mood => CupertinoPageRoute(
+              settings: settings,
+              builder: (context) => const MoodPage(),
             ),
           _ => null,
           },

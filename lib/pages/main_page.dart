@@ -11,6 +11,8 @@ import 'package:train_task_tt_33/gen/assets.gen.dart';
 import 'package:intl/intl.dart';
 import 'package:train_task_tt_33/utils/constants.dart';
 
+import '../bloc/mood_state.dart';
+
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -20,105 +22,60 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  bool _compareDate(DateTime date1, DateTime date2) {
-    return (date1.year == date2.year && date1.month == date2.month &&
-        date1.day == date2.day);
-  }
-
   @override
   Widget build(BuildContext context) {
-    DateTime today = DateTime.now();
-    List<DateTime> dates = [];
-    for (int i = 3; i > 0; i--) {
-      dates.add(today.subtract(Duration(days: i)));
-    }
-    dates.add(today);
-    for (int i = 1; i <= 3; i++) {
-      dates.add(today.add(Duration(days: i)));
-    }
+    DateTime today = DateUtils.dateOnly(DateTime.now());
+    DateTime start = today.subtract(const Duration(days: 3));
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const SizedBox(height: 32,),
-          BlocBuilder<MoodsBloc, MoodsState>(
-            builder: (context, state) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(dates.length,
-                        (index) {
-                      String? iconPath;
-                      Color color = Colors.transparent;
-                      if (state.moods.isNotEmpty) {
-                        for (var mood in state.moods) {
-                          if (mood.date != null && mood.type != null) {
-                            if (_compareDate(dates[index], mood.date!)) {
-                              switch (mood.type) {
-                                case 0:
-                                  {
-                                    color = AppColors.yellow;
-                                    iconPath = Assets.icons.happy;
-                                    break;
-                                  }
-                                case 1:
-                                  {
-                                    color = AppColors.violet;
-                                    iconPath = Assets.icons.unhappy;
-                                    break;
-                                  }
-                                case 2:
-                                  {
-                                    color = AppColors.red;
-                                    iconPath = Assets.icons.angryFace;
-                                    break;
-                                  }
-                                case 3:
-                                  {
-                                    color = AppColors.green;
-                                    iconPath = Assets.icons.confusedFace;
-                                  }
-                              }
-                            }
-                          }
-                        }
-                      }
-                      return Container(
-                        width: 43,
-                        decoration: BoxDecoration(
-                          border: _compareDate(today, dates[index]) ? Border
-                              .all(width: 1, color: AppColors.black) : null,
-                          borderRadius: _compareDate(today, dates[index])
-                              ? BorderRadius.circular(10)
-                              : null,
-                          color: color,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Column(
-                            children: <Widget>[
-                              Text(DateFormat('d').format(dates[index]),
-                                style: AppStyles.displaySmall,),
-                              const SizedBox(height: 4,),
-                              Text(DateFormat('EEEE')
-                                  .format(dates[index])
-                                  .substring(0, 3),
-                                style: AppStyles.displaySmall,),
-                              if (iconPath != null)
-                                SizedBox(
-                                  height: 22,
-                                  width: 13,
-                                  child: SvgPicture.asset(iconPath),
-                                ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }
-                ),
-              );
-            },
-          ),
+          BlocSelector<MoodsBloc, MoodsState, List<MoodState>>(
+          selector: (state) => state.moods,
+          builder: (context, moods) {
+            return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(7, (index) {
+              final d = start.add(Duration(days: index));
+              final mood = moods.where((e) => e.date == d).firstOrNull;
+                  return Container(
+                    width: 43,
+                    decoration: BoxDecoration(
+                      border: d == today ? Border
+                          .all(width: 1, color: AppColors.black) : null,
+                      borderRadius: d == today
+                          ? BorderRadius.circular(10)
+                          : null,
+                      color: mood != null ? AppConstants.moods[index].$1 : Colors.transparent,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Column(
+                        children: <Widget>[
+                          Text(DateFormat('d').format(d),
+                            style: AppStyles.displaySmall,),
+                          const SizedBox(height: 4,),
+                          Text(DateFormat('EEEE')
+                              .format(d)
+                              .substring(0, 3),
+                            style: AppStyles.displaySmall,),
+                          if (mood != null)
+                            SizedBox(
+                              height: 22,
+                              width: 13,
+                              child: SvgPicture.asset(AppConstants.moods[index].$2),
+                            ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+            ),
+          );
+  },
+),
           const SizedBox(height: 30,),
           const Text('Today, I am', style: AppStyles.displayMedium,
             textAlign: TextAlign.start,),
@@ -133,36 +90,36 @@ class _MainPageState extends State<MainPage> {
                     runSpacing: 10,
                     children: [
                       _MoodCard(
-                          color: AppColors.yellow,
-                          iconPath: Assets.icons.happy,
-                          text: 'Happy',
+                          color: AppConstants.moods[0].$1,
+                          iconPath: AppConstants.moods[0].$2,
+                          text: AppConstants.moods[0].$3,
                           opacity: moodType != null && moodType != 0 ? 0.65 : 1,
                           onPressed: () {
                             context.read<MoodsBloc>().updateMoodType(0);
                           },
                       ),
                       _MoodCard(
-                        color: AppColors.violet,
-                        iconPath: Assets.icons.unhappy,
-                        text: 'Sad',
+                        color: AppConstants.moods[1].$1,
+                        iconPath: AppConstants.moods[1].$2,
+                        text: AppConstants.moods[1].$3,
                         opacity: moodType != null && moodType != 1 ? 0.65 : 1,
                         onPressed: () {
                           context.read<MoodsBloc>().updateMoodType(1);
                         },
                       ),
                       _MoodCard(
-                        color: AppColors.red,
-                        iconPath: Assets.icons.angryFace,
-                        text: 'Angry',
+                        color: AppConstants.moods[2].$1,
+                        iconPath: AppConstants.moods[2].$2,
+                        text: AppConstants.moods[2].$3,
                         opacity: moodType != null && moodType != 2 ? 0.65 : 1,
                         onPressed: () {
                           context.read<MoodsBloc>().updateMoodType(2);
                         },
                       ),
                       _MoodCard(
-                        color: AppColors.green,
-                        iconPath: Assets.icons.confusedFace,
-                        text: 'Anxiety',
+                        color: AppConstants.moods[3].$1,
+                        iconPath: AppConstants.moods[3].$2,
+                        text: AppConstants.moods[3].$3,
                         opacity: moodType != null && moodType != 3 ? 0.65 : 1,
                         onPressed: () {
                           context.read<MoodsBloc>().updateMoodType(3);

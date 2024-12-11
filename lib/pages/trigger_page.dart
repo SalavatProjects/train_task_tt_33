@@ -71,9 +71,7 @@ class _TriggerPageState extends State<TriggerPage> {
                               borderRadius: BorderRadius.circular(10),
                               color: AppColors.white
                             ),
-                            child: BlocBuilder<TriggerBloc, TriggerState>(
-                              builder: (context, state) {
-                              return TextFormField(
+                            child: TextFormField(
                               controller: _nameTextEditingController,
                               onChanged: (String value) {
                                 if(value.isNotEmpty) {
@@ -94,9 +92,7 @@ class _TriggerPageState extends State<TriggerPage> {
                                 contentPadding: EdgeInsets.zero,
                                 isDense: true
                               ),
-                            );
-                            },
-                          ),
+                            ),
                           ),
                           const SizedBox(height: 8,),
                           Text('Write down the triggers:', style: AppStyles.displaySmall.copyWith(color: AppColors.white),),
@@ -121,9 +117,7 @@ class _TriggerPageState extends State<TriggerPage> {
                                     maxWidth: 18,
                                     maxHeight: 18,
                                   ),
-                                  suffixIcon: BlocBuilder<TriggerBloc, TriggerState>(
-                                  builder: (context, state) {
-                                    return GestureDetector(
+                                  suffixIcon: GestureDetector(
                                     onTap: () {
                                       setState(() {
                                         if (_triggerTextEditingController.text.isNotEmpty) {
@@ -146,16 +140,12 @@ class _TriggerPageState extends State<TriggerPage> {
                                       ),
                                       child: SvgPicture.asset(Assets.icons.plus),
                                     ),
-                                  );
-                                  },
-                                )
+                                  ),
                               ),
                             ),
                           ),
                           if (_triggerSubjectsList.isNotEmpty)
-                            BlocBuilder<TriggerBloc, TriggerState>(
-                            builder: (context, state) {
-                              return Padding(
+                            Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                                 child: Wrap(
                                   spacing: 4,
@@ -178,9 +168,7 @@ class _TriggerPageState extends State<TriggerPage> {
                                             });
                                           })),
                                 ),
-                            );
-                            },
-                          ),
+                            ),
                           const SizedBox(height: 8,),
                           Text('My comment:', style: AppStyles.displaySmall.copyWith(color: AppColors.white),),
                           const SizedBox(height: 8,),
@@ -194,9 +182,7 @@ class _TriggerPageState extends State<TriggerPage> {
                               borderRadius: BorderRadius.circular(10),
                               color: AppColors.white,
                             ),
-                            child: BlocBuilder<TriggerBloc, TriggerState>(
-                              builder: (context, state) {
-                                return TextFormField(
+                            child: TextFormField(
                               controller: _commentTextEditingController,
                               style: AppStyles.bodySmall,
                               maxLines: 3,
@@ -210,9 +196,7 @@ class _TriggerPageState extends State<TriggerPage> {
                                   contentPadding: EdgeInsets.zero,
                                   isDense: true
                               ),
-                            );
-                            },
-                          ),
+                            ),
                           )
                         ],
                       ),

@@ -17,6 +17,8 @@ import 'package:train_task_tt_33/storages/isar.dart';
 import 'package:train_task_tt_33/storages/shared_preferences.dart';
 import 'package:train_task_tt_33/ui_kit/colors.dart';
 
+import 'bloc/mood_bloc.dart';
+
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -91,7 +93,10 @@ class _AppWidget extends StatelessWidget {
             ),
             AppRoutes.mood => CupertinoPageRoute(
               settings: settings,
-              builder: (context) => const MoodPage(),
+              builder: (context) => BlocProvider(
+                    create: (context) => MoodBloc(),
+                    child: MoodPage(),
+                ),
             ),
           _ => null,
           },

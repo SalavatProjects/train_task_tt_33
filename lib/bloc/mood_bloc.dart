@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 import 'mood_state.dart';
 
 class MoodBloc extends Cubit<MoodState> {
-  MoodBloc(MoodState? mood) : super(mood ?? const MoodState());
+  MoodBloc({MoodState? mood}) : super(mood ?? const MoodState());
 
   void updateType(int value) {
     emit(state.copyWith(type: value));

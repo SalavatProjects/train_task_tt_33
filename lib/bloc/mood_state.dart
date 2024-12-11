@@ -7,14 +7,14 @@ class MoodState extends Equatable{
     this.id,
     this.type,
     this.triggerId,
-    this.reasons,
+    this.reasons = const [],
     this.date
   });
 
   final int? id;
   final int? type;
   final int? triggerId;
-  final List<String>? reasons;
+  final List<String> reasons;
   final DateTime? date;
 
   factory MoodState.fromIsarModel(Mood mood) {
@@ -22,7 +22,7 @@ class MoodState extends Equatable{
         id: mood.id,
         type: mood.type,
         triggerId: mood.triggerId,
-        reasons: mood.reasons,
+        reasons: mood.reasons ?? const [],
         date: mood.date);
   }
 

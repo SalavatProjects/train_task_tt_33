@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:train_task_tt_33/gen/assets.gen.dart';
+import 'package:train_task_tt_33/ui_kit/colors.dart';
 
 abstract class AppConstants {
   static const isFirstRun = 'isFirstRun';
@@ -9,5 +12,11 @@ abstract class AppConstants {
     Assets.icons.chart,
     Assets.icons.book,
     Assets.icons.settings,
+  ];
+  static final moods = <(Color color, String iconPath, String name)>[
+    (AppColors.yellow, Assets.icons.happy, 'Happy'),
+    (AppColors.violet, Assets.icons.unhappy, 'Sad'),
+    (AppColors.red, Assets.icons.angryFace, 'Angry'),
+    (AppColors.green, Assets.icons.confusedFace, 'Anxiety'),
   ];
 }

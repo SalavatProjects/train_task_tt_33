@@ -1,7 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
-import 'package:train_task_tt_33/storages/isar.dart';
 import 'trigger_state.dart';
 
 class TriggerBloc extends Cubit<TriggerState> {

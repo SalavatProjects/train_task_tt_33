@@ -14,60 +14,64 @@ import 'package:train_task_tt_33/utils/constants.dart';
 import '../bloc/mood_state.dart';
 
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class MainPage extends StatelessWidget {
+  MainPage({super.key});
 
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
+  MoodState? _selectedMood;
+  final DateTime _today = DateUtils.dateOnly(DateTime.now());
 
-class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-    DateTime today = DateUtils.dateOnly(DateTime.now());
-    DateTime start = today.subtract(const Duration(days: 3));
+    DateTime start = _today.subtract(const Duration(days: 3));
+    context.read<MoodsBloc>().updateDate(_today);
+    _selectedMood = context.read<MoodsBloc>().state.moods.where((e) => e.date == context.read<MoodsBloc>().state.date).firstOrNull;
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const SizedBox(height: 32,),
-          BlocSelector<MoodsBloc, MoodsState, List<MoodState>>(
-          selector: (state) => state.moods,
-          builder: (context, moods) {
+          BlocBuilder<MoodsBloc, MoodsState>(
+          builder: (context, state) {
             return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(7, (index) {
               final d = start.add(Duration(days: index));
-              final mood = moods.where((e) => e.date == d).firstOrNull;
-                  return Container(
-                    width: 43,
-                    decoration: BoxDecoration(
-                      border: d == today ? Border
-                          .all(width: 1, color: AppColors.black) : null,
-                      borderRadius: d == today
-                          ? BorderRadius.circular(10)
-                          : null,
-                      color: mood != null ? AppConstants.moods[index].$1 : Colors.transparent,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Column(
-                        children: <Widget>[
-                          Text(DateFormat('d').format(d),
-                            style: AppStyles.displaySmall,),
-                          const SizedBox(height: 4,),
-                          Text(DateFormat('EEEE')
-                              .format(d)
-                              .substring(0, 3),
-                            style: AppStyles.displaySmall,),
-                          if (mood != null)
-                            SizedBox(
-                              height: 22,
-                              width: 13,
-                              child: SvgPicture.asset(AppConstants.moods[index].$2),
-                            ),
-                        ],
+              final mood = state.moods.where((e) => e.date == d).firstOrNull;
+                  return GestureDetector(
+                    onTap: () {
+                      context.read<MoodsBloc>().updateDate(d);
+                      _selectedMood = state.moods.where((e) => e.date == state.date).firstOrNull;
+                    },
+                    child: Container(
+                      width: 43,
+                      decoration: BoxDecoration(
+                        border: d == _today ? Border
+                            .all(width: 1, color: AppColors.black) : null,
+                        borderRadius: d == _today
+                            ? BorderRadius.circular(10)
+                            : null,
+                        color: mood != null ? AppConstants.moods[mood.type!].$1 : Colors.transparent,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Column(
+                          children: <Widget>[
+                            Text(DateFormat('d').format(d),
+                              style: AppStyles.displaySmall,),
+                            const SizedBox(height: 4,),
+                            Text(DateFormat('EEEE')
+                                .format(d)
+                                .substring(0, 3),
+                              style: AppStyles.displaySmall,),
+                            if (mood != null)
+                              SizedBox(
+                                height: 22,
+                                width: 13,
+                                child: SvgPicture.asset(AppConstants.moods[mood.type!].$2),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -76,69 +80,74 @@ class _MainPageState extends State<MainPage> {
           );
   },
 ),
-          const SizedBox(height: 30,),
-          const Text('Today, I am', style: AppStyles.displayMedium,
-            textAlign: TextAlign.start,),
-          const SizedBox(height: 15,),
-          BlocSelector<MoodsBloc, MoodsState, int?>(
-            selector: (state) => state.moodType,
-            builder: (context, moodType) {
-              return Column(
-                children: [
-                  Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
-                    children: [
-                      _MoodCard(
+          BlocBuilder<MoodsBloc, MoodsState>(
+            builder: (context, state) {
+              if (_selectedMood == null) {
+                print('werqq');
+                return Column(
+                  children: [
+                    const SizedBox(height: 30,),
+                    const Text('Today, I am', style: AppStyles.displayMedium,
+                      textAlign: TextAlign.start,),
+                    const SizedBox(height: 15,),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: [
+                        _MoodCard(
                           color: AppConstants.moods[0].$1,
                           iconPath: AppConstants.moods[0].$2,
                           text: AppConstants.moods[0].$3,
-                          opacity: moodType != null && moodType != 0 ? 0.65 : 1,
+                          opacity: state.moodType != null && state.moodType != 0 ? 0.65 : 1,
                           onPressed: () {
                             context.read<MoodsBloc>().updateMoodType(0);
                           },
-                      ),
-                      _MoodCard(
-                        color: AppConstants.moods[1].$1,
-                        iconPath: AppConstants.moods[1].$2,
-                        text: AppConstants.moods[1].$3,
-                        opacity: moodType != null && moodType != 1 ? 0.65 : 1,
-                        onPressed: () {
-                          context.read<MoodsBloc>().updateMoodType(1);
-                        },
-                      ),
-                      _MoodCard(
-                        color: AppConstants.moods[2].$1,
-                        iconPath: AppConstants.moods[2].$2,
-                        text: AppConstants.moods[2].$3,
-                        opacity: moodType != null && moodType != 2 ? 0.65 : 1,
-                        onPressed: () {
-                          context.read<MoodsBloc>().updateMoodType(2);
-                        },
-                      ),
-                      _MoodCard(
-                        color: AppConstants.moods[3].$1,
-                        iconPath: AppConstants.moods[3].$2,
-                        text: AppConstants.moods[3].$3,
-                        opacity: moodType != null && moodType != 3 ? 0.65 : 1,
-                        onPressed: () {
-                          context.read<MoodsBloc>().updateMoodType(3);
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20,),
-                  _GoNextBtn(
-                      opacity: moodType == null ? 0.65 : 1,
-                      onPressed: moodType == null ? null : () {
-                        Navigator.of(context).pushNamed(AppRoutes.mood);
-                      })
-                ],
-              );
+                        ),
+                        _MoodCard(
+                          color: AppConstants.moods[1].$1,
+                          iconPath: AppConstants.moods[1].$2,
+                          text: AppConstants.moods[1].$3,
+                          opacity: state.moodType != null && state.moodType != 1 ? 0.65 : 1,
+                          onPressed: () {
+                            context.read<MoodsBloc>().updateMoodType(1);
+                          },
+                        ),
+                        _MoodCard(
+                          color: AppConstants.moods[2].$1,
+                          iconPath: AppConstants.moods[2].$2,
+                          text: AppConstants.moods[2].$3,
+                          opacity: state.moodType != null && state.moodType != 2 ? 0.65 : 1,
+                          onPressed: () {
+                            context.read<MoodsBloc>().updateMoodType(2);
+                          },
+                        ),
+                        _MoodCard(
+                          color: AppConstants.moods[3].$1,
+                          iconPath: AppConstants.moods[3].$2,
+                          text: AppConstants.moods[3].$3,
+                          opacity: state.moodType != null && state.moodType != 3 ? 0.65 : 1,
+                          onPressed: () {
+                            context.read<MoodsBloc>().updateMoodType(3);
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20,),
+                    _GoNextBtn(
+                        opacity: state.moodType == null ? 0.65 : 1,
+                        onPressed: state.moodType == null ? null : () {
+                          Navigator.of(context).pushNamed(AppRoutes.mood);
+                        }),
+                    const SizedBox(height: 30,),
+                    _MyTriggerListCard(onPressed: () => Navigator.of(context).pushNamed(AppRoutes.trigger))
+                  ],
+                );
+              } else {
+                return SizedBox.shrink();
+              }
+
             },
           ),
-          const SizedBox(height: 30,),
-          _MyTriggerListCard(onPressed: () => Navigator.of(context).pushNamed(AppRoutes.trigger))
         ],
       ),
     );

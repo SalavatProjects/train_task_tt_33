@@ -30,9 +30,7 @@ class _TriggerPageState extends State<TriggerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-    create: (context) => TriggerBloc(),
-    child: GestureDetector(
+    return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         body: SafeArea(
@@ -234,10 +232,10 @@ class _TriggerPageState extends State<TriggerPage> {
                 );
         },
       ),
-            )),
+            )
+        ),
       ),
-    ),
-);
+    );
   }
 }
 

@@ -9,5 +9,6 @@ class Mood {
   int? type;
   int? triggerId;
   List<String>? reasons;
+  String? comment;
   DateTime? date;
 }

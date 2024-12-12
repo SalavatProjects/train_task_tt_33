@@ -13,10 +13,10 @@ abstract class AppConstants {
     Assets.icons.book,
     Assets.icons.settings,
   ];
-  static final moods = <(Color color, String iconPath, String name)>[
-    (AppColors.yellow, Assets.icons.happy, 'Happy'),
-    (AppColors.violet, Assets.icons.unhappy, 'Sad'),
-    (AppColors.red, Assets.icons.angryFace, 'Angry'),
-    (AppColors.green, Assets.icons.confusedFace, 'Anxiety'),
+  static final moods = <(Color color, String iconPath, String name, int moodType)>[
+    (AppColors.yellow, Assets.icons.happy, 'Happy', 0),
+    (AppColors.violet, Assets.icons.unhappy, 'Sad', 1),
+    (AppColors.red, Assets.icons.angryFace, 'Angry', 2),
+    (AppColors.green, Assets.icons.confusedFace, 'Anxiety', 3),
   ];
 }

@@ -18,6 +18,7 @@ import 'package:train_task_tt_33/storages/shared_preferences.dart';
 import 'package:train_task_tt_33/ui_kit/colors.dart';
 
 import 'bloc/mood_bloc.dart';
+import 'bloc/trigger_bloc.dart';
 
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -64,43 +65,51 @@ class _AppWidget extends StatelessWidget {
     return FutureBuilder(
       future: context.read<MoodsBloc>().getMoods(),
       builder: (context, snapshot) {
-        return MaterialApp(
-          title: '',
-          themeMode: ThemeMode.light,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            scaffoldBackgroundColor: AppColors.white,
-          ),
-          onUnknownRoute: (settings) => CupertinoPageRoute(
-              builder: (context) => const HomePage()
-          ),
-          onGenerateRoute: (settings) => switch (settings.name) {
-            AppRoutes.onBoarding => CupertinoPageRoute(
-              settings: settings,
-              builder: (context) => const OnBoardingPage()
-            ),
-            AppRoutes.home => CupertinoPageRoute(
-              settings: settings,
-              builder: (context) => const HomePage(),
-            ),
-            AppRoutes.privacy => CupertinoPageRoute(
-              settings: settings,
-              builder: (context) => const PrivacyPage(),
-            ),
-            AppRoutes.trigger => CupertinoPageRoute(
-              settings: settings,
-              builder: (context) => const TriggerPage(),
-            ),
-            AppRoutes.mood => CupertinoPageRoute(
-              settings: settings,
-              builder: (context) => BlocProvider(
-                    create: (context) => MoodBloc(),
-                    child: MoodPage(),
+        return FutureBuilder(
+          future: context.read<MoodsBloc>().getTriggers(),
+          builder: (context, snapshot) {
+            return MaterialApp(
+              title: '',
+              themeMode: ThemeMode.light,
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                scaffoldBackgroundColor: AppColors.white,
+              ),
+              onUnknownRoute: (settings) => CupertinoPageRoute(
+                  builder: (context) => const HomePage()
+              ),
+              onGenerateRoute: (settings) => switch (settings.name) {
+                AppRoutes.onBoarding => CupertinoPageRoute(
+                  settings: settings,
+                  builder: (context) => const OnBoardingPage()
                 ),
-            ),
-          _ => null,
-          },
-          home: SplashPage(isFirstRun: !isFirstRun),
+                AppRoutes.home => CupertinoPageRoute(
+                  settings: settings,
+                  builder: (context) => const HomePage(),
+                ),
+                AppRoutes.privacy => CupertinoPageRoute(
+                  settings: settings,
+                  builder: (context) => const PrivacyPage(),
+                ),
+                AppRoutes.trigger => CupertinoPageRoute(
+                  settings: settings,
+                  builder: (context) => BlocProvider(
+                    create: (context) => TriggerBloc(),
+                    child: const TriggerPage(),
+                  ),
+                ),
+                AppRoutes.mood => CupertinoPageRoute(
+                  settings: settings,
+                  builder: (context) => BlocProvider(
+                        create: (context) => MoodBloc(),
+                        child: MoodPage(),
+                    ),
+                ),
+              _ => null,
+              },
+              home: SplashPage(isFirstRun: !isFirstRun),
+            );
+          }
         );
       }
     );

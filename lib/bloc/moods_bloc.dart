@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flagsmith/flagsmith.dart';
 import 'package:meta/meta.dart';
 import 'package:train_task_tt_33/bloc/mood_state.dart';
 import 'package:train_task_tt_33/bloc/trigger_state.dart';
@@ -13,7 +14,7 @@ class MoodsBloc extends Cubit<MoodsState> {
 
   Future<void> getMoods() async {
     final moods = await AppIsarDatabase.getMoods();
-    AppIsarDatabase.deleteData();
+    print(moods);
     emit(
       state.copyWith(
         moodType: null,
@@ -50,5 +51,9 @@ class MoodsBloc extends Cubit<MoodsState> {
 
   void updateMoodType(int index) {
     emit(state.copyWith(moodType: index));
+  }
+
+  void updateDate(DateTime value) {
+    emit(state.copyWith(date: value));
   }
 }

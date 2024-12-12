@@ -20,11 +20,11 @@ class HomePage extends StatelessWidget {
               Positioned.fill(
                   child: IndexedStack(
                     index: page,
-                    children: const [
+                    children: [
                       MainPage(),
-                      Placeholder(),
-                      Placeholder(),
-                      Placeholder(),
+                      const Placeholder(),
+                      const Placeholder(),
+                      const Placeholder(),
                     ],
                   )
               ),

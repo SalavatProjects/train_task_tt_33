@@ -72,7 +72,7 @@ abstract class AppIsarDatabase {
     });
   }
 
-  static Future<void> deleteData() async {
+  /*static Future<void> deleteData() async {
     await _instance.writeTxn(() async {
       final startDate = DateTime.now().subtract(const Duration(days: 3));
       final endDate = DateTime.now().add(const Duration(days: 3));
@@ -90,7 +90,7 @@ abstract class AppIsarDatabase {
       }
 
     });
-  }
+  }*/
 
 
 

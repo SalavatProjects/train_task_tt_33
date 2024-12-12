@@ -13,8 +13,22 @@ class MoodBloc extends Cubit<MoodState> {
     emit(state.copyWith(triggerId: value));
   }
 
-  void updateReasons(List<String> value) {
-    emit(state.copyWith(reasons: value));
+  void addReason(String value) {
+    emit(state.copyWith(reasons: [...state.reasons, value]));
+  }
+
+  void deleteReason(int index) {
+    final copy = state.reasons.toList();
+    copy.removeAt(index);
+    emit(state.copyWith(reasons: copy));
+  }
+
+  /*void updateReasons(List<String> value) {
+    emit(state.copyWith(reasons: List.from(value)));
+  }*/
+
+  void updateComment(String value) {
+    emit(state.copyWith(comment: value));
   }
 
   void updateDate(DateTime value) {

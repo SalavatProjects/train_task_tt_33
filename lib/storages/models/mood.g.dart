@@ -17,23 +17,28 @@ const MoodSchema = CollectionSchema(
   name: r'Mood',
   id: 6108270824894609419,
   properties: {
-    r'date': PropertySchema(
+    r'comment': PropertySchema(
       id: 0,
+      name: r'comment',
+      type: IsarType.string,
+    ),
+    r'date': PropertySchema(
+      id: 1,
       name: r'date',
       type: IsarType.dateTime,
     ),
     r'reasons': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'reasons',
       type: IsarType.stringList,
     ),
     r'triggerId': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'triggerId',
       type: IsarType.long,
     ),
     r'type': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'type',
       type: IsarType.long,
     )
@@ -59,6 +64,12 @@ int _moodEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.comment;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final list = object.reasons;
     if (list != null) {
       bytesCount += 3 + list.length * 3;
@@ -79,10 +90,11 @@ void _moodSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.date);
-  writer.writeStringList(offsets[1], object.reasons);
-  writer.writeLong(offsets[2], object.triggerId);
-  writer.writeLong(offsets[3], object.type);
+  writer.writeString(offsets[0], object.comment);
+  writer.writeDateTime(offsets[1], object.date);
+  writer.writeStringList(offsets[2], object.reasons);
+  writer.writeLong(offsets[3], object.triggerId);
+  writer.writeLong(offsets[4], object.type);
 }
 
 Mood _moodDeserialize(
@@ -92,11 +104,12 @@ Mood _moodDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Mood();
-  object.date = reader.readDateTimeOrNull(offsets[0]);
+  object.comment = reader.readStringOrNull(offsets[0]);
+  object.date = reader.readDateTimeOrNull(offsets[1]);
   object.id = id;
-  object.reasons = reader.readStringList(offsets[1]);
-  object.triggerId = reader.readLongOrNull(offsets[2]);
-  object.type = reader.readLongOrNull(offsets[3]);
+  object.reasons = reader.readStringList(offsets[2]);
+  object.triggerId = reader.readLongOrNull(offsets[3]);
+  object.type = reader.readLongOrNull(offsets[4]);
   return object;
 }
 
@@ -108,12 +121,14 @@ P _moodDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readStringList(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 2:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringList(offset)) as P;
     case 3:
+      return (reader.readLongOrNull(offset)) as P;
+    case 4:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -208,6 +223,150 @@ extension MoodQueryWhere on QueryBuilder<Mood, Mood, QWhereClause> {
 }
 
 extension MoodQueryFilter on QueryBuilder<Mood, Mood, QFilterCondition> {
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> commentIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'comment',
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> commentIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'comment',
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> commentEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'comment',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> commentGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'comment',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> commentLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'comment',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> commentBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'comment',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> commentStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'comment',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> commentEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'comment',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> commentContains(String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'comment',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> commentMatches(String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'comment',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> commentIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'comment',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> commentIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'comment',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Mood, Mood, QAfterFilterCondition> dateIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -700,6 +859,18 @@ extension MoodQueryObject on QueryBuilder<Mood, Mood, QFilterCondition> {}
 extension MoodQueryLinks on QueryBuilder<Mood, Mood, QFilterCondition> {}
 
 extension MoodQuerySortBy on QueryBuilder<Mood, Mood, QSortBy> {
+  QueryBuilder<Mood, Mood, QAfterSortBy> sortByComment() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'comment', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterSortBy> sortByCommentDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'comment', Sort.desc);
+    });
+  }
+
   QueryBuilder<Mood, Mood, QAfterSortBy> sortByDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'date', Sort.asc);
@@ -738,6 +909,18 @@ extension MoodQuerySortBy on QueryBuilder<Mood, Mood, QSortBy> {
 }
 
 extension MoodQuerySortThenBy on QueryBuilder<Mood, Mood, QSortThenBy> {
+  QueryBuilder<Mood, Mood, QAfterSortBy> thenByComment() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'comment', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterSortBy> thenByCommentDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'comment', Sort.desc);
+    });
+  }
+
   QueryBuilder<Mood, Mood, QAfterSortBy> thenByDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'date', Sort.asc);
@@ -788,6 +971,13 @@ extension MoodQuerySortThenBy on QueryBuilder<Mood, Mood, QSortThenBy> {
 }
 
 extension MoodQueryWhereDistinct on QueryBuilder<Mood, Mood, QDistinct> {
+  QueryBuilder<Mood, Mood, QDistinct> distinctByComment(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'comment', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Mood, Mood, QDistinct> distinctByDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'date');
@@ -817,6 +1007,12 @@ extension MoodQueryProperty on QueryBuilder<Mood, Mood, QQueryProperty> {
   QueryBuilder<Mood, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Mood, String?, QQueryOperations> commentProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'comment');
     });
   }
 

@@ -8,6 +8,7 @@ class MoodState extends Equatable{
     this.type,
     this.triggerId,
     this.reasons = const [],
+    this.comment = '',
     this.date
   });
 
@@ -15,6 +16,7 @@ class MoodState extends Equatable{
   final int? type;
   final int? triggerId;
   final List<String> reasons;
+  final String comment;
   final DateTime? date;
 
   factory MoodState.fromIsarModel(Mood mood) {
@@ -23,18 +25,20 @@ class MoodState extends Equatable{
         type: mood.type,
         triggerId: mood.triggerId,
         reasons: mood.reasons ?? const [],
+        comment: mood.comment ?? '',
         date: mood.date);
   }
 
   @override
   // TODO: implement props
-  List<Object?> get props => [id, type, triggerId, reasons, date];
+  List<Object?> get props => [id, type, triggerId, reasons, comment, date];
 
   MoodState copyWith({
     int? id,
     int? type,
     int? triggerId,
     List<String>? reasons,
+    String? comment,
     DateTime? date
   }) {
    return MoodState(
@@ -42,6 +46,7 @@ class MoodState extends Equatable{
        type: type ?? this.type,
        triggerId: triggerId ?? this.triggerId,
        reasons: reasons ?? this.reasons,
+       comment: comment ?? this.comment,
        date: date ?? this.date
    );
   }
@@ -51,6 +56,7 @@ class MoodState extends Equatable{
         ..type = type
         ..triggerId = triggerId
         ..reasons = reasons
+        ..comment = comment
         ..date = date;
   }
 }

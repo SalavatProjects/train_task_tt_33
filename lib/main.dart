@@ -18,6 +18,7 @@ import 'package:train_task_tt_33/storages/shared_preferences.dart';
 import 'package:train_task_tt_33/ui_kit/colors.dart';
 
 import 'bloc/mood_bloc.dart';
+import 'bloc/mood_state.dart';
 import 'bloc/trigger_bloc.dart';
 
 Future<void> main() async {
@@ -100,10 +101,7 @@ class _AppWidget extends StatelessWidget {
                 ),
                 AppRoutes.mood => CupertinoPageRoute(
                   settings: settings,
-                  builder: (context) => BlocProvider(
-                        create: (context) => MoodBloc(),
-                        child: MoodPage(),
-                    ),
+                  builder: (context) => MoodPage(),
                 ),
               _ => null,
               },

@@ -14,7 +14,6 @@ class MoodsBloc extends Cubit<MoodsState> {
 
   Future<void> getMoods() async {
     final moods = await AppIsarDatabase.getMoods();
-    print(moods);
     emit(
       state.copyWith(
         moodType: null,
